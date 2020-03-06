@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.dao.DeptDao">
+
+    <select id="getDeptById" resultType="com.atguigu.bean.Dept">
+        select id did , dept_name deptName from tb_dept d where d.id = #{id}
+    </select>
+    <!--
+        id 是resultMap的唯一标识id
+        type是返回类型
+     -->
+    <resultMap id="myResult1" type="com.atguigu.bean.Dept">
+        <id column="id" property="id"/>
+        <result column="dept_name" property="deptName"/>
+        <!--
+            collection 是返回集合类型的封装规则
+            property 是引用属性名
+            oftype 是引用属性的全类名
+        -->
+        <collection property="empls" ofType="com.atguigu.bean.Employee">
+            <id column="eid" property="id"/>
+            <result column="last_name" property="lastName"/>
+            <result column="gender" property="gender"/>
+            <result column="email" property="email"/>
+        </collection>
+    </resultMap>
+    <select id="getDeptAndEmplsById" resultMap="myResult1">
+         SELECT d.id , d.dept_name , e.last_name , e.id eid,e.gender,e.email
+         FROM tb_dept d
+         LEFT JOIN tb_employee e
+         ON d.id = e.d_id
+         WHERE d.id = #{id}
+    </select>
+</mapper>

@@ -1,9 +1,11 @@
 package com.atguigu.bean;
 
+import java.util.List;
+
 public class Dept {
     private Integer id;
     private String deptName;
-    private Employee empls;
+    private List<Employee> empls;
 
     public Integer getId() {
         return id;
@@ -21,11 +23,11 @@ public class Dept {
         this.deptName = deptName;
     }
 
-    public Employee getEmpls() {
+    public List<Employee> getEmpls() {
         return empls;
     }
 
-    public void setEmpls(Employee empls) {
+    public void setEmpls(List<Employee> empls) {
         this.empls = empls;
     }
 
