@@ -1,5 +1,7 @@
 package com.atguigu.bean;
 
+import org.apache.ibatis.type.Alias;
+
 public class Employee {
 
     private Integer id;
@@ -7,6 +9,18 @@ public class Employee {
     private String email;
     private Character gender;
     private Dept dept;
+
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String lastName, String email, Character gender, Dept dept) {
+        this.id = id;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.dept = dept;
+    }
 
     public Integer getId() {
         return id;

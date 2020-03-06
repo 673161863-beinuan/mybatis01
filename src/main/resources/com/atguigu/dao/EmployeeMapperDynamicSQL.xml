@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.dao.EmployeeMapperDynamicSQL">
+
+    <select id="getEmpls" resultType="employee">
+        select *
+        from tb_employee
+        <!--where 1=1-->
+        <where>
+            <if test="id != null and id !=0">
+                and id = #{id}
+            </if>
+            <!--test 判断表达式 这个是填javabean里的属性-->
+            <if test="lastName !=null and lastName != ''">
+                and last_name regexp #{lastName}
+            </if>
+            <if test="gender !=null and gender !=''">
+                and gender =#{gender}
+            </if>
+            <if test="email !=null and email != ''">
+                and email =#{email}
+            </if>
+        </where>
+    </select>
+
+    <select id="getEmplsOfTrim" resultType="employee">
+        select *
+        from tb_employee
+        <!--
+            prefix="" 前缀 在当前的最前的位置拼接上
+            prefixOverrides="" 覆盖前缀，将多余的覆盖掉
+             suffix="" 后缀,在最后面加上
+            suffixOverrides="" 覆盖后缀 ，将多余的覆盖掉
+        -->
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id != null and id !=0">
+                id = #{id} and
+            </if>
+            <!--test 判断表达式 这个是填javabean里的属性-->
+            <if test="lastName !=null and lastName != ''">
+                last_name regexp #{lastName} and
+            </if>
+            <if test="gender !=null and gender !=''">
+                gender =#{gender} and
+            </if>
+            <if test="email !=null and email != ''">
+                email =#{email} and
+            </if>
+        </trim>
+    </select>
+
+    <select id="getEmplsOfChoose" resultType="employee">
+        select *
+        from tb_employee
+        <where>
+            <choose>
+                <!--when 分支只会进入一个-->
+                <when test="id != null">
+                    id = #{id}
+                </when>
+                <when test="lastName !=null and lastName !=''">
+                    last_name regexp #{lastName}
+                </when>
+                <!--otherwise相当于默认，当传入的所有参数都没有，进入到otherwise,所以otherwise只能有一个-->
+                <otherwise>
+                    gender = '女'
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!--更新操作
+        测试set标签（与where标签类似）
+    -->
+   <update id="updateEmployee" parameterType="employee">
+        update tb_employee
+        <set>
+            <if test="lastName !=null and lastName != ''">
+                last_name = #{lastName},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+            <if test="email !=null and email != ''">
+                email = #{email}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+ <!--   <update id="updateEmployee" parameterType="employee">
+        update tb_employee
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="lastName !=null and lastName != ''">
+                last_name =#{lastName},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+            <if test="email !=null and email != ''">
+                email =#{email}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>-->
+
+    <select id="getEmplsOfForea" resultType="employee">
+        select * from tb_employee where id in
+        <!--collection是接口的参数名 加注解否则找不到@Param("ids")
+            item 是遍历的当前的单个id
+            open 是以什么开头
+            close 是什么结尾
+            separator 是分隔符是什么
+            遍历list时 index是索引 item是当前的值
+            遍历map时 index是key item 是当前key的值
+        -->
+        <foreach collection="ids" item="item_id" separator="," open="(" close=")" >
+             #{item_id}
+        </foreach>
+    </select>
+    
+    <insert id="addEmpls">
+        INSERT INTO tb_employee(last_name,gender,email,d_id)
+        VALUES
+        <foreach collection="emps" item="emp" separator="," >
+            (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
+        </foreach>
+    </insert>
+</mapper>

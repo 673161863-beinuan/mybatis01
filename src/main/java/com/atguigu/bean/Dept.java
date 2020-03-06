@@ -7,6 +7,19 @@ public class Dept {
     private String deptName;
     private List<Employee> empls;
 
+    public Dept() {
+    }
+
+    public Dept(Integer id) {
+        this.id = id;
+    }
+
+    public Dept(Integer id, String deptName, List<Employee> empls) {
+        this.id = id;
+        this.deptName = deptName;
+        this.empls = empls;
+    }
+
     public Integer getId() {
         return id;
     }

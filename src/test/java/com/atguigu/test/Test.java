@@ -39,8 +39,10 @@ public class Test {
         Dept deptAndEmplsById = mapper.getDeptAndEmplsById(1);
         System.out.println(deptAndEmplsById);
         System.out.println(deptAndEmplsById.getEmpls());
+        session.close();
 
     }
+
     @org.junit.Test
     public void test03() throws IOException {
 
@@ -52,8 +54,10 @@ public class Test {
         Employee empleeAndDeptById = mapper.getEmpleeAndDeptById(1);
         System.out.println(empleeAndDeptById);
         System.out.println(empleeAndDeptById.getDept().getDeptName());
+        session.close();
 
     }
+
     @org.junit.Test
     public void test04() throws IOException {
 
@@ -64,6 +68,7 @@ public class Test {
         EmployeeDao mapper = session.getMapper(EmployeeDao.class);
         Employee empleeAndDeptById = mapper.getEmpleeAndDeptById(1);
         System.out.println(empleeAndDeptById.getLastName());
+        session.close();
 
     }
 }

@@ -43,6 +43,7 @@
             property 是javabean里的属性
             select 是根据那个接口查询
             column 是将getEmpleeAndDeptById返回的哪个值给com.atguigu.dao.DeptDao.getDeptById作为参数传递再去查询
+                    如果想要传递的参数有多个采用这样的方式  column = {key1=value1,key2=value2},采用键值对的形式传递
         -->
         <association property="dept" select="com.atguigu.dao.DeptDao.getDeptById" column="did">
         </association>
